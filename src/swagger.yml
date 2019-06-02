@@ -1,0 +1,166 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Cryto service
+  description: All services related to Crypto
+basePath: /v1
+
+schemes:
+  - https
+
+tags:
+  - name: crypto
+    description: |
+      Create, Update & Delete Retailers, which are what an authenticated user can map to
+
+produces:
+  - application/json
+
+paths:
+  /token/{tokenId}/total: 
+    parameters:
+      - name: tokenId
+        in: path
+        required: true
+        type: string
+    get:
+      operationId: GetTotalSupply
+      tags:
+        - tokens
+      description: |
+        Get the total supply of tokens
+      responses:
+        200:
+          description: |
+            Returns the total token in the system
+          schema:
+            $ref: "#/definitions/TokenSupply"
+
+  /token/{tokenId}:
+    parameters:
+      - name: tokenId
+        in: path
+        required: true
+        type: string
+
+    get:
+      operationId: GetTokenInfo
+      tags:
+        - tokens
+      description: |
+        Get the information of desired token
+      responses:
+        200:
+          description: |
+            Returns the total token in the system
+          schema:
+            $ref: "#/definitions/Token"
+
+        412:
+          description: |
+            The token does not exis
+          schema:
+            $ref: "#/definitions/Token"
+
+        404:
+          description: |
+            The token has no information
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  /balances:
+    get:
+      operationId: GetBalances
+      tags:
+        - balances
+      description: |
+        Returns the balances of all the addresses
+      responses:
+        200:
+          description: |
+            Returns the balances in the system
+          schema:
+            $ref: "#/definitions/Balances"
+
+        412:
+          description: |
+            The balance does not exist
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+        404:
+          description: |
+            The balance has no information
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  /balance/{address}:
+    parameters:
+      - name: address
+        in: path
+        required: true
+        type: string
+
+    get:
+      operationId: GetBalanceByAddress
+      tags:
+        - balances
+      description: |
+        Returns the balance of the address
+      responses:
+        200:
+          description: |
+            Returns the balance in the system
+          schema:
+            $ref: "#/definitions/Balance"
+
+        412:
+          description: |
+            The balance does not exist
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+        404:
+          description: |
+            The balance has no information
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+definitions:
+  TokenSupply:
+    type: object
+    additionalProperties: false
+    properties:
+      total_supply:
+        type: number
+        format: int64
+  
+  Token:
+    type: object
+    additionalProperties: false
+    properties:
+      name:
+        type: string
+      symbol:
+        type: string
+
+  Balances:
+    type: array
+    items:
+      $ref: "#/definitions/Balance"
+      
+  Balance:
+    type: object
+    additionalProperties: false
+    properties:
+      holder:
+        type: string
+      balance:
+        type: number
+        format: int64
+
+  ErrorResponse:
+    type: object
+    properties:
+      message:
+        type: string
