@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+function finish {
+  if [[ -n "${GO_PIPELINE_LABEL+1}" ]]; then
+    echo "in GOCD. Kill all containers"
+    ./auto/clean-up || true
+  fi
+}
+
+if [[ -n "${GO_PIPELINE_LABEL+1}" ]]; then
+  echo "in GOCD. Kill all containers"
+  ./auto/clean-up || true
+fi
+
+
+trap finish EXIT
+
+docker volume create yarn-cache > /dev/null || true
+
+docker-compose up

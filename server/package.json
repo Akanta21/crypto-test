@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV='development' nodemon -e js,yml -w src --exec \"babel-node src\"",
+    "build": "babel src -s -D -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
