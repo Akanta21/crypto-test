@@ -17,4 +17,7 @@ trap finish EXIT
 
 docker volume create yarn-cache > /dev/null || true
 
+docker-compose run server yarn install
+docker-compose run client yarn install
+
 docker-compose up

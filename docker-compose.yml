@@ -14,16 +14,23 @@ services:
       NODE_ENV: development
 
   client:
-    build:
-      context: ./client/
-    command: npm start
+    image: node:10
+    command: bash
+    working_dir: /app/client
+    command: yarn start
     volumes:
-      - ./client/:/usr/app/
-      - /usr/app/node_modules
+      - ./:/app/
+      - yarn-cache:/usr/local/share/.cache/yarn/v2
+      - node_modules:/app/node_modules/
+    links:
+      - server    
     depends_on:
-      - server
+      - server      
     ports:
-      - "3000:3000"
+      - "3000:3000"      
+    environment:
+      server: http://server:8090
+      ENVIRONMENT_NAME: dev  
 
 volumes:
   node_modules: {}
