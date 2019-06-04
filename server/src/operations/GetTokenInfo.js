@@ -5,6 +5,7 @@ const GetTokenInfo = async tokenId => {
     .blockchain
     .getSmartContractInit(tokenId);
 
+  console.log(tokenInfo)
   let infoReturn = {}
   tokenInfo.result.forEach((info) => {
     if (info.vname === 'name') {

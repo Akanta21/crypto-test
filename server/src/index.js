@@ -32,7 +32,7 @@ createMiddleware(swaggerDoc, app, (error, middleware) => {
   })
 
   app.server = http.createServer(app)
-  app.server.listen(process.env.PORT || 8080, () => {
+  app.server.listen(process.env.PORT || 8090, () => {
     console.log(`Started on port ${app.server.address().port}`)
   })
 })
