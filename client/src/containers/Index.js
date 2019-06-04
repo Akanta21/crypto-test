@@ -15,7 +15,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableBody';
-
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 function TabContainer({ items }) {
@@ -29,8 +30,8 @@ function TabContainer({ items }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map(row => (
-            <TableRow key={row.name}>
+          {items.map((row, index) => (
+            <TableRow key={index}>
               <TableCell component="th" scope="row">
                 {row.holder}
               </TableCell>
@@ -53,13 +54,15 @@ class Index extends Component {
       balance: {},
       selected: '',
       address: '',
+      check: 'ALI',
+      coinAddress: '5938fc8af82250ad6cf1da3bb92f4aa005cb2717',
       amountInAddress: '',
       error: undefined
     };
   }
 
   componentDidMount() {
-    this.fetchFullList()
+    this.fetchFullList("5938fc8af82250ad6cf1da3bb92f4aa005cb2717")
   }
 
   fetch = async (coinAddress, coinName) => {
@@ -67,8 +70,8 @@ class Index extends Component {
     this.setState({ balance, selected: coinName })
   }
 
-  fetchFullList = async () => {
-    const { balanceInfo } = await getAPIClient().getBalances()
+  fetchFullList = async (address) => {
+    const { balanceInfo } = await getAPIClient().getBalances(address)
     this.setState({ balances: balanceInfo })
   }
 
@@ -76,10 +79,10 @@ class Index extends Component {
     this.setState({ error: undefined })
     e.preventDefault()
     try {
-      const balance = await getAPIClient().getBalanceByAddress(this.state.address)
+      const balance = await getAPIClient().getBalanceByAddress(this.state.address, this.state.coinAddress)
       this.setState({ amountInAddress: balance })
     } catch (err) {
-      this.setState({ error: "Invalid address" })
+      this.setState({ amountInAddress: '', error: "Invalid address" })
     }
   }
 
@@ -87,7 +90,21 @@ class Index extends Component {
     this.setState({ ...this.state, [name]: event.target.value });
   };
 
+  handleCbeck = name => {
+    if (name === 'ALI') {
+      this.setState({ coinAddress: '5938fc8af82250ad6cf1da3bb92f4aa005cb2717' })
+    } else {
+      this.setState({ coinAddress: 'b38122df13f28b919be6169ae0e8fffb63e66c4d' })
+    }
+    this.setState({ check: name })
+  }
+
   handleTabchange = (e, newValue) => {
+    if (newValue === 1) {
+      this.fetchFullList("b38122df13f28b919be6169ae0e8fffb63e66c4d")
+    } else {
+      this.fetchFullList("5938fc8af82250ad6cf1da3bb92f4aa005cb2717")
+    }
     this.setState({ value: newValue })
   }
 
@@ -100,6 +117,12 @@ class Index extends Component {
           color="primary"
         >
           Alice Coin
+          </Button>
+        <Button variant="contained"
+          onClick={() => this.fetch("b38122df13f28b919be6169ae0e8fffb63e66c4d", "Bob Coin")}
+          color="secondary"
+        >
+          Bob Coin
           </Button>
       </div>
       <section>
@@ -115,6 +138,28 @@ class Index extends Component {
     <div>
       <label className={styles.bold}>Token by Address</label>
       <form className={styles.paddedHorizontal} noValidate autoComplete="off">
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.check === 'ALI'}
+              onChange={() => this.handleCbeck('ALI')}
+              value="ALI"
+              color="primary"
+            />
+          }
+          label="Alice Coin"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.check === 'BOB'}
+              onChange={() => this.handleCbeck('BOB')}
+              value="BOB"
+              color="primary"
+            />
+          }
+          label="BOB Coin"
+        />
         <Paper className={styles.root}>
           <InputBase className={styles.input} onChange={this.handleChange('address')} placeholder="Address" />
           <IconButton

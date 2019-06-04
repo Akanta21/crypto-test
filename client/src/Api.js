@@ -20,9 +20,6 @@ class API {
   getTokenSupply(tokenId) {
     return Axios.get(
       `${this._config.coinUrl}/token/${tokenId}/total`,
-      // {
-      //   headers: this._headers()
-      // }
     )
       .then(result => {
         return result.data
@@ -33,12 +30,11 @@ class API {
   }
 
 
-  getBalanceByAddress(address) {
+  getBalanceByAddress(address, coinAddress) {
     return Axios.get(
-      `${this._config.coinUrl}/balance/${address}`
+      `${this._config.coinUrl}/balance/${address}?coinAddress=${coinAddress}`
     )
       .then(result => {
-        console.log(result)
         return result.data
       })
       .catch(error => {
@@ -48,10 +44,9 @@ class API {
 
   getBalances(address) {
     return Axios.get(
-      `${this._config.coinUrl}/balances`
+      `${this._config.coinUrl}/balances/${address}`
     )
       .then(result => {
-        console.log(result)
         return result.data
       })
       .catch(error => {

@@ -25,17 +25,19 @@ router.get('/token/:tokenId', async (req, res) => {
 
 router.get('/balance/:address', async (req, res) => {
   const address = req.params.address
+  const coinAddress = req.query.coinAddress
   try {
-    const balance = await Operations.GetBalanceByAddress(address)
+    const balance = await Operations.GetBalanceByAddress(address, coinAddress)
     res.json(balance)
   } catch (err) {
     res.status(400).json('Unable to retrieve balance')
   }
 })
 
-router.get('/balances', async (req, res) => {
+router.get('/balances/:address', async (req, res) => {
+  const address = req.params.address
   try {
-    const balances = await Operations.GetBalances()
+    const balances = await Operations.GetBalances(address)
     res.json(balances)
   } catch (err) {
     res.status(400).json('Unable to retrieve balances')

@@ -68,7 +68,12 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  /balances:
+  /balances/{address}:
+    parameters:
+      - name: address
+        in: path
+        required: true
+        type: string
     get:
       operationId: GetBalances
       tags:
@@ -96,6 +101,10 @@ paths:
 
   /balance/{address}:
     parameters:
+      - in: query
+        name: coinAddress
+        type: string
+        required: true
       - name: address
         in: path
         required: true
