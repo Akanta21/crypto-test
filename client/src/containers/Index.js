@@ -18,6 +18,11 @@ import TableBody from '@material-ui/core/TableBody';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
+const coinAddresses = {
+  "ALI": "5938fc8af82250ad6cf1da3bb92f4aa005cb2717",
+  "BOB": "b38122df13f28b919be6169ae0e8fffb63e66c4d"
+}
+
 
 function TabContainer({ items }) {
   return (
@@ -49,20 +54,20 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
+      value: 'ALI',
       balances: [],
       balance: {},
       selected: '',
       address: '',
       check: 'ALI',
-      coinAddress: '5938fc8af82250ad6cf1da3bb92f4aa005cb2717',
+      coinAddress: coinAddresses['ALI'],
       amountInAddress: '',
       error: undefined
     };
   }
 
   componentDidMount() {
-    this.fetchFullList("5938fc8af82250ad6cf1da3bb92f4aa005cb2717")
+    this.fetchFullList(coinAddresses['ALI'])
   }
 
   fetch = async (coinAddress, coinName) => {
@@ -90,21 +95,13 @@ class Index extends Component {
     this.setState({ ...this.state, [name]: event.target.value });
   };
 
-  handleCbeck = name => {
-    if (name === 'ALI') {
-      this.setState({ coinAddress: '5938fc8af82250ad6cf1da3bb92f4aa005cb2717' })
-    } else {
-      this.setState({ coinAddress: 'b38122df13f28b919be6169ae0e8fffb63e66c4d' })
-    }
+  handleCheck = name => {
+    this.setState({ coinAddress: coinAddresses[name] })
     this.setState({ check: name })
   }
 
   handleTabchange = (e, newValue) => {
-    if (newValue === 1) {
-      this.fetchFullList("b38122df13f28b919be6169ae0e8fffb63e66c4d")
-    } else {
-      this.fetchFullList("5938fc8af82250ad6cf1da3bb92f4aa005cb2717")
-    }
+    this.fetchFullList(coinAddresses[newValue])
     this.setState({ value: newValue })
   }
 
@@ -113,13 +110,13 @@ class Index extends Component {
       <label className={styles.bold}>Total Supply of Token</label>
       <div className={styles.paddedHorizontal}>
         <Button variant="contained"
-          onClick={() => this.fetch("5938fc8af82250ad6cf1da3bb92f4aa005cb2717", "Alice Coin")}
+          onClick={() => this.fetch(coinAddresses['ALI'], "Alice Coin")}
           color="primary"
         >
           Alice Coin
           </Button>
         <Button variant="contained"
-          onClick={() => this.fetch("b38122df13f28b919be6169ae0e8fffb63e66c4d", "Bob Coin")}
+          onClick={() => this.fetch(coinAddresses['BOB'], "Bob Coin")}
           color="secondary"
         >
           Bob Coin
@@ -142,7 +139,7 @@ class Index extends Component {
           control={
             <Checkbox
               checked={this.state.check === 'ALI'}
-              onChange={() => this.handleCbeck('ALI')}
+              onChange={() => this.handleCheck('ALI')}
               value="ALI"
               color="primary"
             />
@@ -153,7 +150,7 @@ class Index extends Component {
           control={
             <Checkbox
               checked={this.state.check === 'BOB'}
-              onChange={() => this.handleCbeck('BOB')}
+              onChange={() => this.handleCheck('BOB')}
               value="BOB"
               color="primary"
             />
@@ -186,12 +183,12 @@ class Index extends Component {
     <div className={styles.container}>
       <AppBar position="static" color="default">
         <Tabs value={this.state.value} onChange={this.handleTabchange} variant="fullWidth">
-          <Tab label="Alice Coin" />
-          <Tab label="Bob Coin" />
+          <Tab value={'ALI'} label="Alice Coin" />
+          <Tab value={'BOB'} label="Bob Coin" />
         </Tabs>
       </AppBar>
-      {this.state.value === 0 && <TabContainer items={this.state.balances} />}
-      {this.state.value === 1 && <TabContainer items={this.state.balances} />}
+      {this.state.value === 'ALI' && <TabContainer items={this.state.balances} />}
+      {this.state.value === 'BOB' && <TabContainer items={this.state.balances} />}
     </div>
   )
 
