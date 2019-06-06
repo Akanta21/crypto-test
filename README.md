@@ -27,6 +27,8 @@ React Client: http://localhost:3000
 
 Express Server: http://localhost:8080
 
+API documentation: http://localhost:8080/api-doc
+
 For the next part is to generate transaction,
 
 ```shell
