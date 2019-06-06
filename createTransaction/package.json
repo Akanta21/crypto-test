@@ -1,5 +1,5 @@
 {
-  "name": "createTransaction",
+  "name": "crypto-zil-create",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
