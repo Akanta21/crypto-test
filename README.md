@@ -1,6 +1,10 @@
 # Crypto - Alice and Bob Coins
 This repo contains the method to generating a contract, viewing it from both the client and api server.
 
+# Addresses of Coins:
+* Alice : 0x5938fc8af82250ad6cf1da3bb92f4aa005cb2717
+* Bob : 0xB38122df13F28b919Be6169ae0E8fFfB63E66c4d
+
 ## How is the repo organised?
 1. Client -> this is where the client code is located
 2. Server -> Api server
