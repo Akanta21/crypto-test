@@ -23,7 +23,7 @@
     "@zilliqa-js/zilliqa": "^0.6.3",
     "bn.js": "^4.11.8",
     "express": "^4.17.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "swagger-express-middleware": "^2.0.2",
     "tslib": "^1.9.3",
     "yaml": "^1.6.0"
